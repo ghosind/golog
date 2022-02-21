@@ -1,7 +1,5 @@
-package logger
-
-import "io"
+package golog
 
 type Appender interface {
-	Output() io.Writer
+	Write(entry *Entry)
 }

@@ -1,3 +1,3 @@
-module github.com/ghosind/go-logger
+module github.com/ghosind/golog
 
 go 1.17
