@@ -35,6 +35,7 @@ func Default() *Logger {
 
 func (logger *Logger) newEntry() *Entry {
 	entry := logger.entries.Get().(*Entry)
+	entry.logger = logger
 
 	return entry
 }
