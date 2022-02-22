@@ -1,28 +1,53 @@
 package golog
 
 import (
+	"io/fs"
 	"os"
 	"sync"
 )
 
+// FileAppenderConfig is the configuration for the FileAppender.
 type FileAppenderConfig struct {
-	Path      string
-	Filename  string
+	// Path is the directory path to store logs, default is the current directory.
+	Path string
+	// Filename is the log file name, it'll set to app.log if the value is empty.
+	Filename string
+	// Mode is the log file mode, default is 0644.
+	Mode fs.FileMode
+	// Formatter is the log message formatter, default is TextFormatter.
 	Formatter Formatter
 }
 
+// FileAppender is a golog appender that writes log into the specific file.
 type FileAppender struct {
 	path      string
 	filename  string
 	file      *os.File
+	mode      fs.FileMode
 	mutex     sync.Mutex
 	formatter Formatter
 }
 
+// NewFileAppender creates a new FileAppender.
 func NewFileAppender(config FileAppenderConfig) *FileAppender {
 	appender := FileAppender{}
+
 	appender.path = config.Path
-	appender.filename = config.Path + config.Filename
+	appender.filename = config.Filename
+	if appender.path == "" {
+		appender.path = "."
+	}
+	if appender.filename == "" {
+		appender.filename = "app.log"
+	}
+	appender.filename = config.Path + "/" + config.Filename
+
+	if config.Mode == 0 {
+		appender.mode = 0644
+	} else {
+		appender.mode = config.Mode
+	}
+
 	appender.file = appender.openFile()
 
 	if config.Formatter != nil {
@@ -34,26 +59,36 @@ func NewFileAppender(config FileAppenderConfig) *FileAppender {
 	return &appender
 }
 
+// Write formats the data from entries and writes into the specific log file.
 func (appender *FileAppender) Write(entry *Entry) {
 	if appender.file != nil {
 		appender.file.Write(appender.formatter.Format(entry))
 	}
 }
 
+// checkDir checks the directory path exists or not, if not exists, it will create the directory.
 func (appender *FileAppender) checkDir() error {
-	if _, err := os.Stat(appender.path); os.IsNotExist(err) {
-		return os.Mkdir(appender.path, 0777)
+	_, err := os.Stat(appender.path)
+	if os.IsNotExist(err) {
+		return os.Mkdir(appender.path, 0775)
+	} else if err != nil {
+		panic(err)
 	}
 
 	return nil
 }
 
+// openFile opens or creates the log file.
 func (appender *FileAppender) openFile() *os.File {
 	appender.mutex.Lock()
 	defer appender.mutex.Unlock()
 
 	appender.checkDir()
 
-	file, _ := os.OpenFile(appender.filename, os.O_APPEND|os.O_CREATE|os.O_SYNC, 0644)
+	file, err := os.OpenFile(appender.filename, os.O_APPEND|os.O_CREATE|os.O_SYNC, appender.mode)
+	if err != nil {
+		panic(err)
+	}
+
 	return file
 }
