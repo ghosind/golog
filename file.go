@@ -29,29 +29,34 @@ type FileAppender struct {
 }
 
 // NewFileAppender creates a new FileAppender.
-func NewFileAppender(config FileAppenderConfig) *FileAppender {
+func NewFileAppender(config ...FileAppenderConfig) *FileAppender {
+	cfg := FileAppenderConfig{}
+	if len(config) > 0 {
+		cfg = config[0]
+	}
+
 	appender := FileAppender{}
 
-	appender.path = config.Path
-	appender.filename = config.Filename
+	appender.path = cfg.Path
+	appender.filename = cfg.Filename
 	if appender.path == "" {
 		appender.path = "."
 	}
 	if appender.filename == "" {
 		appender.filename = "app.log"
 	}
-	appender.filename = config.Path + "/" + config.Filename
+	appender.filename = appender.path + "/" + appender.filename
 
-	if config.Mode == 0 {
+	if cfg.Mode == 0 {
 		appender.mode = 0644
 	} else {
-		appender.mode = config.Mode
+		appender.mode = cfg.Mode
 	}
 
 	appender.file = appender.openFile()
 
-	if config.Formatter != nil {
-		appender.formatter = config.Formatter
+	if cfg.Formatter != nil {
+		appender.formatter = cfg.Formatter
 	} else {
 		appender.formatter = TextFormatter{}
 	}

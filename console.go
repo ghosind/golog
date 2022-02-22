@@ -5,26 +5,36 @@ import (
 	"os"
 )
 
+// ConsoleAppenderConfig is the configuration used to create a ConsoleAppender.
 type ConsoleAppenderConfig struct {
+	// Formatter is the formatter used to format the log entry.
 	Formatter Formatter
 }
 
+// ConsoleAppender is a golog appender that writes log into the console.
 type ConsoleAppender struct {
-	Formatter Formatter
+	formatter Formatter
 }
 
-func NewConsoleAppender(config ConsoleAppenderConfig) *ConsoleAppender {
+// NewConsoleAppender creates a new ConsoleAppender.
+func NewConsoleAppender(config ...ConsoleAppenderConfig) *ConsoleAppender {
+	cfg := ConsoleAppenderConfig{}
+	if len(config) > 0 {
+		cfg = config[0]
+	}
+
 	appender := ConsoleAppender{}
 
-	if config.Formatter != nil {
-		appender.Formatter = config.Formatter
+	if cfg.Formatter != nil {
+		appender.formatter = cfg.Formatter
 	} else {
-		appender.Formatter = TextFormatter{}
+		appender.formatter = TextFormatter{}
 	}
 
 	return &appender
 }
 
+// Write formats the data from entries and writes into the console.
 func (appender *ConsoleAppender) Write(entry *Entry) {
-	fmt.Fprint(os.Stderr, string(appender.Formatter.Format(entry)))
+	fmt.Fprint(os.Stderr, string(appender.formatter.Format(entry)))
 }
