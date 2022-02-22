@@ -2,6 +2,7 @@ package golog
 
 import (
 	"fmt"
+	"os"
 	"time"
 )
 
@@ -24,6 +25,14 @@ func (entry *Entry) Log(level Level, message string) {
 
 	for _, appender := range entry.logger.Appenders {
 		appender.Write(entry)
+	}
+
+	if level == FatalLevel {
+		// exit program if level is FatalLevel
+		os.Exit(1)
+	} else if level == PanicLevel {
+		// trigger panic if level is PanicLevel
+		panic(message)
 	}
 }
 
