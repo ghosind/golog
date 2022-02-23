@@ -28,11 +28,17 @@ func New() *Logger {
 // Default creates a new logger with default settings.
 func Default() *Logger {
 	logger := New()
-	logger.Appenders = append(logger.Appenders, NewConsoleAppender(ConsoleAppenderConfig{}))
+	logger.Appenders = append(logger.Appenders, newBasicAppender())
 
 	return logger
 }
 
+// AddAppender adds one or more appenders to the logger.
+func (logger *Logger) AddAppender(appender ...Appender) {
+	logger.Appenders = append(logger.Appenders, appender...)
+}
+
+// newEntry gets a new entry from the pool.
 func (logger *Logger) newEntry() *Entry {
 	entry := logger.entries.Get().(*Entry)
 	entry.logger = logger
@@ -40,7 +46,8 @@ func (logger *Logger) newEntry() *Entry {
 	return entry
 }
 
-func (logger *Logger) finalizeEntry(entry *Entry) {
+// freeEntry release the entry into the pool.
+func (logger *Logger) freeEntry(entry *Entry) {
 	logger.entries.Put(entry)
 }
 
@@ -48,7 +55,7 @@ func (logger *Logger) Log(level Level, message string) {
 	if logger.isLevelEnabled(level) {
 		entry := logger.newEntry()
 		entry.Log(level, message)
-		logger.finalizeEntry(entry)
+		logger.freeEntry(entry)
 	}
 }
 
