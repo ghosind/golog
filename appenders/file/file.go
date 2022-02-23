@@ -1,13 +1,15 @@
-package golog
+package file
 
 import (
 	"io/fs"
 	"os"
 	"sync"
+
+	"github.com/ghosind/golog"
 )
 
-// FileAppenderConfig is the configuration for the FileAppender.
-type FileAppenderConfig struct {
+// Config is the configuration for the FileAppender.
+type Config struct {
 	// Path is the directory path to store logs, default is the current directory.
 	Path string
 	// Filename is the log file name, it'll set to app.log if the value is empty.
@@ -15,7 +17,7 @@ type FileAppenderConfig struct {
 	// Mode is the log file mode, default is 0644.
 	Mode fs.FileMode
 	// Formatter is the log message formatter, default is TextFormatter.
-	Formatter Formatter
+	Formatter golog.Formatter
 }
 
 // FileAppender is a golog appender that writes log into the specific file.
@@ -25,12 +27,12 @@ type FileAppender struct {
 	file      *os.File
 	mode      fs.FileMode
 	mutex     sync.Mutex
-	formatter Formatter
+	formatter golog.Formatter
 }
 
-// NewFileAppender creates a new FileAppender.
-func NewFileAppender(config ...FileAppenderConfig) *FileAppender {
-	cfg := FileAppenderConfig{}
+// New creates a new FileAppender.
+func New(config ...Config) *FileAppender {
+	cfg := Config{}
 	if len(config) > 0 {
 		cfg = config[0]
 	}
@@ -58,14 +60,14 @@ func NewFileAppender(config ...FileAppenderConfig) *FileAppender {
 	if cfg.Formatter != nil {
 		appender.formatter = cfg.Formatter
 	} else {
-		appender.formatter = TextFormatter{}
+		appender.formatter = golog.TextFormatter{}
 	}
 
 	return &appender
 }
 
 // Write formats the data from entries and writes into the specific log file.
-func (appender *FileAppender) Write(entry *Entry) {
+func (appender *FileAppender) Write(entry *golog.Entry) {
 	if appender.file != nil {
 		appender.file.Write(appender.formatter.Format(entry))
 	}
