@@ -18,19 +18,26 @@ func newEntry() *Entry {
 	return &Entry{}
 }
 
-func (entry *Entry) Log(level Level, message string) {
-	entry.Level = level
-	entry.Message = message
-	entry.Time = time.Now()
+func (entry *Entry) duplicate() *Entry {
+	return entry.logger.newEntry()
+}
 
-	for _, appender := range entry.logger.Appenders {
-		appender.Write(entry)
+func (entry *Entry) Log(level Level, message string) {
+	newEntry := entry.duplicate()
+	defer newEntry.logger.freeEntry(newEntry)
+
+	newEntry.Level = level
+	newEntry.Message = message
+	newEntry.Time = time.Now()
+
+	for _, appender := range newEntry.logger.Appenders {
+		appender.Write(newEntry)
 	}
 
 	if level == FatalLevel {
 		// exit program if level is FatalLevel
 		os.Exit(1)
-	} else if level == PanicLevel {
+	} else if level <= PanicLevel {
 		// trigger panic if level is PanicLevel
 		panic(message)
 	}
