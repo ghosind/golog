@@ -14,7 +14,7 @@ type TextFormatter struct{}
 func (formatter TextFormatter) Format(entry *Entry) []byte {
 	time := entry.Time.Format("2006-01-02T15:04:05.000")
 
-	return []byte(fmt.Sprintf("[%s] [%s] %s", time, GetLevel(entry.Level), entry.Message))
+	return []byte(fmt.Sprintf("[%s] [%s] %s\n", time, GetLevel(entry.Level), entry.Message))
 }
 
 type JSONFormatter struct{}

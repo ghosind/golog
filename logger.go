@@ -1,7 +1,6 @@
 package golog
 
 import (
-	"fmt"
 	"sync"
 )
 
@@ -84,31 +83,67 @@ func (logger *Logger) Debug(message string) {
 }
 
 func (logger *Logger) Logf(level Level, message string, args ...interface{}) {
-	logger.Log(level, fmt.Sprintf(message, args...))
+	if logger.isLevelEnabled(level) {
+		entry := logger.newEntry()
+		entry.Logf(level, message, args...)
+		logger.freeEntry(entry)
+	}
 }
 
 func (logger *Logger) Panicf(message string, args ...interface{}) {
-	logger.Logf(PanicLevel, message)
+	logger.Logf(PanicLevel, message, args...)
 }
 
 func (logger *Logger) Fatalf(message string, args ...interface{}) {
-	logger.Logf(FatalLevel, message)
+	logger.Logf(FatalLevel, message, args...)
 }
 
 func (logger *Logger) Errorf(message string, args ...interface{}) {
-	logger.Logf(ErrorLevel, message)
+	logger.Logf(ErrorLevel, message, args...)
 }
 
 func (logger *Logger) Warnf(message string, args ...interface{}) {
-	logger.Logf(WarnLevel, message)
+	logger.Logf(WarnLevel, message, args...)
 }
 
 func (logger *Logger) Infof(message string, args ...interface{}) {
-	logger.Logf(InfoLevel, message)
+	logger.Logf(InfoLevel, message, args...)
 }
 
 func (logger *Logger) Debugf(message string, args ...interface{}) {
-	logger.Logf(DebugLevel, message)
+	logger.Logf(DebugLevel, message, args...)
+}
+
+func (logger *Logger) Logln(level Level, args ...interface{}) {
+	if logger.isLevelEnabled(level) {
+		entry := logger.newEntry()
+		entry.Logln(level, args...)
+		logger.freeEntry(entry)
+	}
+}
+
+func (logger *Logger) Panicln(args ...interface{}) {
+	logger.Logln(PanicLevel, args...)
+}
+
+func (logger *Logger) Fatalln(args ...interface{}) {
+	logger.Logln(FatalLevel, args...)
+}
+
+func (logger *Logger) Errorln(args ...interface{}) {
+	logger.Logln(ErrorLevel, args...)
+}
+
+func (logger *Logger) Warnln(args ...interface{}) {
+	logger.Logln(WarnLevel, args...)
+}
+
+func (logger *Logger) Infoln(args ...interface{}) {
+	logger.Logln(InfoLevel, args...)
+}
+
+func (logger *Logger) Debugln(args ...interface{}) {
+	logger.Logln(DebugLevel, args...)
 }
 
 func (logger *Logger) isLevelEnabled(level Level) bool {

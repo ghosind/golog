@@ -49,3 +49,27 @@ func Infof(message string, args ...interface{}) {
 func Debugf(message string, args ...interface{}) {
 	builtinLogger.Debugf(message, args...)
 }
+
+func Panicln(args ...interface{}) {
+	builtinLogger.Logln(PanicLevel, args...)
+}
+
+func Fatalln(args ...interface{}) {
+	builtinLogger.Logln(FatalLevel, args...)
+}
+
+func Errorln(args ...interface{}) {
+	builtinLogger.Logln(ErrorLevel, args...)
+}
+
+func Warnln(args ...interface{}) {
+	builtinLogger.Logln(WarnLevel, args...)
+}
+
+func Infoln(args ...interface{}) {
+	builtinLogger.Logln(InfoLevel, args...)
+}
+
+func Debugln(args ...interface{}) {
+	builtinLogger.Logln(DebugLevel, args...)
+}

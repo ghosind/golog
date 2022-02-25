@@ -40,6 +40,11 @@ func (entry *Entry) Logf(level Level, message string, args ...interface{}) {
 	entry.Log(level, fmt.Sprintf(message, args...))
 }
 
+func (entry *Entry) Logln(level Level, args ...interface{}) {
+	msg := fmt.Sprintln(args...)
+	entry.Log(level, msg[:len(msg)-1])
+}
+
 func (entry *Entry) Panic(message string) {
 	entry.Log(PanicLevel, message)
 }
@@ -86,4 +91,28 @@ func (entry *Entry) Infof(message string, args ...interface{}) {
 
 func (entry *Entry) Debugf(message string, args ...interface{}) {
 	entry.Logf(DebugLevel, message, args...)
+}
+
+func (entry *Entry) Panicln(args ...interface{}) {
+	entry.Logln(PanicLevel, args...)
+}
+
+func (entry *Entry) Fatalln(args ...interface{}) {
+	entry.Logln(FatalLevel, args...)
+}
+
+func (entry *Entry) Errorln(args ...interface{}) {
+	entry.Logln(ErrorLevel, args...)
+}
+
+func (entry *Entry) Warnln(args ...interface{}) {
+	entry.Logln(WarnLevel, args...)
+}
+
+func (entry *Entry) Infoln(args ...interface{}) {
+	entry.Logln(InfoLevel, args...)
+}
+
+func (entry *Entry) Debugln(args ...interface{}) {
+	entry.Logln(DebugLevel, args...)
 }
