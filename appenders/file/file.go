@@ -67,10 +67,16 @@ func New(config ...Config) *FileAppender {
 }
 
 // Write formats the data from entries and writes into the specific log file.
-func (appender *FileAppender) Write(entry *golog.Entry) {
+func (appender *FileAppender) Write(entry *golog.Entry) error {
 	if appender.file != nil {
-		appender.file.Write(appender.formatter.Format(entry))
+		buf, err := appender.formatter.Format(entry)
+		if err != nil {
+			return err
+		}
+		appender.file.Write(buf)
 	}
+
+	return nil
 }
 
 // checkDir checks the directory path exists or not, if not exists, it will create the directory.

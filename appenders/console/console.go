@@ -37,6 +37,12 @@ func New(config ...Config) *ConsoleAppender {
 }
 
 // Write formats the data from entries and writes into the console.
-func (appender *ConsoleAppender) Write(entry *golog.Entry) {
-	fmt.Fprint(os.Stderr, string(appender.formatter.Format(entry)))
+func (appender *ConsoleAppender) Write(entry *golog.Entry) error {
+	buf, err := appender.formatter.Format(entry)
+	if err != nil {
+		return err
+	}
+	fmt.Fprint(os.Stderr, string(buf))
+
+	return nil
 }
