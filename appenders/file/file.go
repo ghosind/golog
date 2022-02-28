@@ -60,7 +60,7 @@ func New(config ...Config) *FileAppender {
 	if cfg.Formatter != nil {
 		appender.formatter = cfg.Formatter
 	} else {
-		appender.formatter = golog.TextFormatter{}
+		appender.formatter = &golog.TextFormatter{}
 	}
 
 	return &appender

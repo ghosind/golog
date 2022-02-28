@@ -2,6 +2,7 @@ package console
 
 import (
 	"fmt"
+	"io"
 	"os"
 
 	"github.com/ghosind/golog"
@@ -11,11 +12,14 @@ import (
 type Config struct {
 	// Formatter is the formatter used to format the log entry.
 	Formatter golog.Formatter
+	// Output is the logger output file descriptor, default is Stderr.
+	Output io.Writer
 }
 
 // ConsoleAppender is a golog appender that writes log into the console.
 type ConsoleAppender struct {
 	formatter golog.Formatter
+	output    io.Writer
 }
 
 // New creates a new ConsoleAppender.
@@ -30,7 +34,13 @@ func New(config ...Config) *ConsoleAppender {
 	if cfg.Formatter != nil {
 		appender.formatter = cfg.Formatter
 	} else {
-		appender.formatter = golog.TextFormatter{}
+		appender.formatter = &golog.TextFormatter{}
+	}
+
+	if cfg.Output != nil {
+		appender.output = cfg.Output
+	} else {
+		appender.output = os.Stderr
 	}
 
 	return &appender
@@ -42,7 +52,7 @@ func (appender *ConsoleAppender) Write(entry *golog.Entry) error {
 	if err != nil {
 		return err
 	}
-	fmt.Fprint(os.Stderr, string(buf))
+	fmt.Fprint(appender.output, string(buf))
 
 	return nil
 }
