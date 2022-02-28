@@ -17,7 +17,7 @@ type basicAppender struct {
 // newBasicAppender creates a new basic appender.
 func newBasicAppender() *basicAppender {
 	return &basicAppender{
-		formatter: TextFormatter{},
+		formatter: &TextFormatter{},
 	}
 }
 

@@ -24,7 +24,7 @@ type TextFormatter struct {
 }
 
 // Format formats message with the specific format.
-func (formatter TextFormatter) Format(entry *Entry) ([]byte, error) {
+func (formatter *TextFormatter) Format(entry *Entry) ([]byte, error) {
 	parts := formatter.getFormatParts()
 	buffer := bytes.Buffer{}
 
@@ -58,7 +58,7 @@ func (formatter TextFormatter) Format(entry *Entry) ([]byte, error) {
 }
 
 // getFormatParts parses format template and returns template information.
-func (formatter TextFormatter) getFormatParts() []*formatparser.FormatPart {
+func (formatter *TextFormatter) getFormatParts() []*formatparser.FormatPart {
 	formatter.mx.Lock()
 	defer formatter.mx.Unlock()
 
