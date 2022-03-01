@@ -22,7 +22,7 @@ func Test_BasicAppender(t *testing.T) {
 	formatter := newBasicAppender()
 
 	if err := formatter.Write(&entry); err != nil {
-		t.Errorf("basicFormatter.Write returns %v error, expect no error", err)
+		t.Errorf("basicAppender.Write returns %v error, expect no error", err)
 	}
 
 	w.Close()
@@ -38,6 +38,6 @@ func Test_BasicAppender(t *testing.T) {
 	)
 
 	if buf.String() != expect {
-		t.Errorf("basicFormatter logs \"%s\", expect \"%s\"", buf.String(), expect)
+		t.Errorf("basicAppender logs \"%s\", expect \"%s\"", buf.String(), expect)
 	}
 }
