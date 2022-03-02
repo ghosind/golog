@@ -2,7 +2,7 @@ package golog
 
 import "testing"
 
-func Test_GetLevel(t *testing.T) {
+func Test_GetLevelLabel(t *testing.T) {
 	expects := map[Level]string{
 		PanicLevel: "PANIC",
 		FatalLevel: "FATAL",
@@ -14,8 +14,8 @@ func Test_GetLevel(t *testing.T) {
 	}
 
 	for level, message := range expects {
-		if actual := GetLevel(level); actual != message {
-			t.Errorf("GetLevel(%d) = %s, expect %s", level, actual, message)
+		if actual := GetLevelLabel(level); actual != message {
+			t.Errorf("GetLevelLabel(%d) = %s, expect %s", level, actual, message)
 		}
 	}
 }

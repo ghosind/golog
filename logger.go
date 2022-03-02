@@ -5,8 +5,9 @@ import (
 )
 
 type Logger struct {
-	Level     Level
-	Appenders []Appender
+	Level       Level
+	Appenders   []Appender
+	LevelLabels map[Level]string
 
 	entries *sync.Pool
 }
@@ -30,6 +31,20 @@ func Default() *Logger {
 	logger.Appenders = append(logger.Appenders, newBasicAppender())
 
 	return logger
+}
+
+// GetLevelLabel returns the string representation of the specific level.
+func (logger *Logger) GetLevelLabel(level Level) string {
+	label := ""
+	if logger.LevelLabels != nil {
+		label = logger.LevelLabels[level]
+	}
+
+	if label == "" {
+		label = defaultLevelLabels[level]
+	}
+
+	return label
 }
 
 // AddAppender adds one or more appenders to the logger.

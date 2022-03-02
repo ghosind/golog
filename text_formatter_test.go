@@ -21,7 +21,7 @@ func Test_TextFormatterWithDefaultFormat(t *testing.T) {
 
 	expect := fmt.Sprintf("[%s] [%s] %s",
 		entry.Time.Format(defaultTimestampFormat),
-		GetLevel(entry.Level),
+		GetLevelLabel(entry.Level),
 		entry.Message,
 	)
 	if string(buf) != expect {
@@ -47,7 +47,7 @@ func Test_TextFormatterWithCustomFormat(t *testing.T) {
 	}
 
 	expect := fmt.Sprintf("%s - %s - %s",
-		GetLevel(entry.Level),
+		GetLevelLabel(entry.Level),
 		entry.Time.Format(timestampFormat),
 		entry.Message,
 	)

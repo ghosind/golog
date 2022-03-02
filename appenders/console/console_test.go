@@ -35,7 +35,7 @@ func Test_StdConsoleAppender(t *testing.T) {
 
 	expect := fmt.Sprintf("[%s] [%s] %s",
 		entry.Time.Format("2006-01-02T15:04:05.000"),
-		golog.GetLevel(entry.Level),
+		golog.GetLevelLabel(entry.Level),
 		entry.Message,
 	)
 
@@ -66,7 +66,7 @@ func Test_CustomConsoleAppender(t *testing.T) {
 	}
 
 	expect := fmt.Sprintf("[%s] [%s] %s",
-		golog.GetLevel(entry.Level),
+		golog.GetLevelLabel(entry.Level),
 		entry.Time.Format("2006-01-02 15:04:05"),
 		entry.Message,
 	)

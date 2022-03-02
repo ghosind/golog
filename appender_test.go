@@ -33,7 +33,7 @@ func Test_BasicAppender(t *testing.T) {
 
 	expect := fmt.Sprintf("[%s] [%s] %s",
 		entry.Time.Format(defaultTimestampFormat),
-		GetLevel(entry.Level),
+		GetLevelLabel(entry.Level),
 		entry.Message,
 	)
 

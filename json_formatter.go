@@ -27,7 +27,7 @@ func (formatter JSONFormatter) Format(entry *Entry) ([]byte, error) {
 	if name := formatter.Fields[KeyLevel]; name != "" {
 		levelField = name
 	}
-	data[levelField] = GetLevel(entry.Level)
+	data[levelField] = GetLevelLabel(entry.Level)
 
 	messageField := KeyMessage
 	if name := formatter.Fields[KeyMessage]; name != "" {

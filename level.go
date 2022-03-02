@@ -18,22 +18,16 @@ const (
 	DebugLevel
 )
 
-// GetLevel returns the string representation of the level.
-func GetLevel(level Level) string {
-	switch level {
-	case PanicLevel:
-		return "PANIC"
-	case FatalLevel:
-		return "FATAL"
-	case ErrorLevel:
-		return "ERROR"
-	case WarnLevel:
-		return "WARN"
-	case InfoLevel:
-		return "INFO"
-	case DebugLevel:
-		return "DEBUG"
-	default:
-		return ""
-	}
+var defaultLevelLabels map[Level]string = map[Level]string{
+	PanicLevel: "PANIC",
+	FatalLevel: "FATAL",
+	ErrorLevel: "ERROR",
+	WarnLevel:  "WARN",
+	InfoLevel:  "INFO",
+	DebugLevel: "DEBUG",
+}
+
+// GetLevelLabel returns the string representation of the level.
+func GetLevelLabel(level Level) string {
+	return builtinLogger.GetLevelLabel(level)
 }

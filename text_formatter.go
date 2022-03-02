@@ -46,7 +46,7 @@ func (formatter *TextFormatter) Format(entry *Entry) ([]byte, error) {
 		case KeyTimestamp:
 			buffer.WriteString(time)
 		case KeyLevel:
-			buffer.WriteString(GetLevel(entry.Level))
+			buffer.WriteString(GetLevelLabel(entry.Level))
 		case KeyMessage:
 			buffer.WriteString(entry.Message)
 		default:

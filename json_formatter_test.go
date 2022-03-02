@@ -16,7 +16,7 @@ func Test_DefaultJSONFormatter(t *testing.T) {
 
 	expect, err := json.Marshal(map[string]interface{}{
 		KeyTimestamp: entry.Time.Format(defaultTimestampFormat),
-		KeyLevel:     GetLevel(entry.Level),
+		KeyLevel:     GetLevelLabel(entry.Level),
 		KeyMessage:   entry.Message,
 	})
 	if err != nil {
@@ -45,7 +45,7 @@ func Test_CustomJSONFormatter(t *testing.T) {
 	timestampFormat := "2006-01-02 15:04:05"
 	expect, err := json.Marshal(map[string]interface{}{
 		"TIME":    entry.Time.Format(timestampFormat),
-		"LEVEL":   GetLevel(entry.Level),
+		"LEVEL":   GetLevelLabel(entry.Level),
 		"MESSAGE": entry.Message,
 	})
 	if err != nil {
