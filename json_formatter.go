@@ -7,6 +7,8 @@ type JSONFormatter struct {
 	Fields map[string]string
 	// TimestampFormat is the timestamp format template with time.Format rules.
 	TimestampFormat string
+	// Logger is the logger that the formatter is attached to.
+	Logger *Logger
 }
 
 func (formatter JSONFormatter) Format(entry *Entry) ([]byte, error) {

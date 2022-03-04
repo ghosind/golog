@@ -18,6 +18,8 @@ type TextFormatter struct {
 	LogFormat string
 	// TimestampFormat is the timestamp format template with time.Format rules.
 	TimestampFormat string
+	// Logger is the logger that the formatter is attached to.
+	Logger *Logger
 
 	formatParts []*formatparser.FormatPart
 	mx          sync.Mutex
@@ -46,7 +48,11 @@ func (formatter *TextFormatter) Format(entry *Entry) ([]byte, error) {
 		case KeyTimestamp:
 			buffer.WriteString(time)
 		case KeyLevel:
-			buffer.WriteString(GetLevelLabel(entry.Level))
+			label := GetLevelLabel(entry.Level)
+			if formatter.Logger != nil {
+				label = formatter.Logger.GetLevelLabel(entry.Level)
+			}
+			buffer.WriteString(label)
 		case KeyMessage:
 			buffer.WriteString(entry.Message)
 		default:
