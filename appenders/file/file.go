@@ -55,8 +55,6 @@ func New(config ...Config) *FileAppender {
 		appender.mode = cfg.Mode
 	}
 
-	appender.file = appender.openFile()
-
 	if cfg.Formatter != nil {
 		appender.formatter = cfg.Formatter
 	} else {
@@ -68,13 +66,18 @@ func New(config ...Config) *FileAppender {
 
 // Write formats the data from entries and writes into the specific log file.
 func (appender *FileAppender) Write(entry *golog.Entry) error {
-	if appender.file != nil {
-		buf, err := appender.formatter.Format(entry)
-		if err != nil {
+	if appender.file == nil {
+		if err := appender.openFile(); err != nil {
 			return err
 		}
-		appender.file.Write(buf)
 	}
+
+	buf, err := appender.formatter.Format(entry)
+	if err != nil {
+		return err
+	}
+
+	appender.file.Write(buf)
 
 	return nil
 }
@@ -84,24 +87,26 @@ func (appender *FileAppender) checkDir() error {
 	_, err := os.Stat(appender.path)
 	if os.IsNotExist(err) {
 		return os.Mkdir(appender.path, 0775)
-	} else if err != nil {
-		panic(err)
 	}
 
-	return nil
+	return err
 }
 
 // openFile opens or creates the log file.
-func (appender *FileAppender) openFile() *os.File {
+func (appender *FileAppender) openFile() error {
 	appender.mutex.Lock()
 	defer appender.mutex.Unlock()
 
-	appender.checkDir()
+	if err := appender.checkDir(); err != nil {
+		return err
+	}
 
 	file, err := os.OpenFile(appender.filename, os.O_APPEND|os.O_CREATE|os.O_SYNC, appender.mode)
 	if err != nil {
-		panic(err)
+		return err
 	}
 
-	return file
+	appender.file = file
+
+	return nil
 }
