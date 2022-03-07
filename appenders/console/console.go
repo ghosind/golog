@@ -1,7 +1,6 @@
 package console
 
 import (
-	"fmt"
 	"io"
 	"os"
 
@@ -52,7 +51,8 @@ func (appender *ConsoleAppender) Write(entry *golog.Entry) error {
 	if err != nil {
 		return err
 	}
-	fmt.Fprint(appender.output, string(buf))
 
-	return nil
+	_, err = appender.output.Write(buf)
+
+	return err
 }
