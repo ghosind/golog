@@ -10,24 +10,27 @@ import (
 
 // Config is the configuration for the FileAppender.
 type Config struct {
-	// Path is the directory path to store logs, default is the current directory.
-	Path string
 	// Filename is the log file name, it'll set to app.log if the value is empty.
 	Filename string
-	// Mode is the log file mode, default is 0644.
-	Mode fs.FileMode
 	// Formatter is the log message formatter, default is TextFormatter.
 	Formatter golog.Formatter
+	// Logger is the logger instance.
+	Logger *golog.Logger
+	// Mode is the log file mode, default is 0644.
+	Mode fs.FileMode
+	// Path is the directory path to store logs, default is the current directory.
+	Path string
 }
 
 // FileAppender is a golog appender that writes log into the specific file.
 type FileAppender struct {
-	path      string
-	filename  string
 	file      *os.File
+	filename  string
+	formatter golog.Formatter
+	logger    *golog.Logger
 	mode      fs.FileMode
 	mutex     sync.Mutex
-	formatter golog.Formatter
+	path      string
 }
 
 // New creates a new FileAppender.
@@ -37,7 +40,9 @@ func New(config ...Config) *FileAppender {
 		cfg = config[0]
 	}
 
-	appender := FileAppender{}
+	appender := FileAppender{
+		logger: cfg.Logger,
+	}
 
 	appender.path = cfg.Path
 	appender.filename = cfg.Filename
@@ -58,7 +63,9 @@ func New(config ...Config) *FileAppender {
 	if cfg.Formatter != nil {
 		appender.formatter = cfg.Formatter
 	} else {
-		appender.formatter = &golog.TextFormatter{}
+		appender.formatter = &golog.TextFormatter{
+			Logger: cfg.Logger,
+		}
 	}
 
 	return &appender

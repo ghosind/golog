@@ -11,6 +11,8 @@ import (
 type Config struct {
 	// Formatter is the formatter used to format the log entry.
 	Formatter golog.Formatter
+	// Logger is the logger instance.
+	Logger *golog.Logger
 	// Output is the logger output file descriptor, default is Stderr.
 	Output io.Writer
 }
@@ -18,6 +20,7 @@ type Config struct {
 // ConsoleAppender is a golog appender that writes log into the console.
 type ConsoleAppender struct {
 	formatter golog.Formatter
+	logger    *golog.Logger
 	output    io.Writer
 }
 
@@ -28,12 +31,16 @@ func New(config ...Config) *ConsoleAppender {
 		cfg = config[0]
 	}
 
-	appender := ConsoleAppender{}
+	appender := ConsoleAppender{
+		logger: cfg.Logger,
+	}
 
 	if cfg.Formatter != nil {
 		appender.formatter = cfg.Formatter
 	} else {
-		appender.formatter = &golog.TextFormatter{}
+		appender.formatter = &golog.TextFormatter{
+			Logger: cfg.Logger,
+		}
 	}
 
 	if cfg.Output != nil {
