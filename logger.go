@@ -97,6 +97,10 @@ func (logger *Logger) Debug(message string) {
 	logger.Log(DebugLevel, message)
 }
 
+func (logger *Logger) Print(message string) {
+	logger.Log(InfoLevel, message)
+}
+
 func (logger *Logger) Logf(level Level, message string, args ...interface{}) {
 	if logger.isLevelEnabled(level) {
 		entry := logger.newEntry()
@@ -129,6 +133,10 @@ func (logger *Logger) Debugf(message string, args ...interface{}) {
 	logger.Logf(DebugLevel, message, args...)
 }
 
+func (logger *Logger) Printf(message string, args ...interface{}) {
+	logger.Logf(InfoLevel, message, args...)
+}
+
 func (logger *Logger) Logln(level Level, args ...interface{}) {
 	if logger.isLevelEnabled(level) {
 		entry := logger.newEntry()
@@ -159,6 +167,10 @@ func (logger *Logger) Infoln(args ...interface{}) {
 
 func (logger *Logger) Debugln(args ...interface{}) {
 	logger.Logln(DebugLevel, args...)
+}
+
+func (logger *Logger) Println(args ...interface{}) {
+	logger.Logln(InfoLevel, args...)
 }
 
 func (logger *Logger) isLevelEnabled(level Level) bool {

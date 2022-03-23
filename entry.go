@@ -76,6 +76,10 @@ func (entry *Entry) Debug(message string) {
 	entry.Log(DebugLevel, message)
 }
 
+func (entry *Entry) Print(message string) {
+	entry.Log(InfoLevel, message)
+}
+
 func (entry *Entry) Panicf(message string, args ...interface{}) {
 	entry.Logf(PanicLevel, message, args...)
 }
@@ -100,6 +104,10 @@ func (entry *Entry) Debugf(message string, args ...interface{}) {
 	entry.Logf(DebugLevel, message, args...)
 }
 
+func (entry *Entry) Printf(message string, args ...interface{}) {
+	entry.Logf(InfoLevel, message, args...)
+}
+
 func (entry *Entry) Panicln(args ...interface{}) {
 	entry.Logln(PanicLevel, args...)
 }
@@ -122,4 +130,8 @@ func (entry *Entry) Infoln(args ...interface{}) {
 
 func (entry *Entry) Debugln(args ...interface{}) {
 	entry.Logln(DebugLevel, args...)
+}
+
+func (entry *Entry) Println(args ...interface{}) {
+	entry.Logln(InfoLevel, args...)
 }

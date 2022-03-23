@@ -26,6 +26,10 @@ func Debug(message string) {
 	builtinLogger.Debug(message)
 }
 
+func Print(message string) {
+	builtinLogger.Print(message)
+}
+
 func Panicf(message string, args ...interface{}) {
 	builtinLogger.Panicf(message, args...)
 }
@@ -50,26 +54,34 @@ func Debugf(message string, args ...interface{}) {
 	builtinLogger.Debugf(message, args...)
 }
 
+func Printf(message string, args ...interface{}) {
+	builtinLogger.Printf(message, args...)
+}
+
 func Panicln(args ...interface{}) {
-	builtinLogger.Logln(PanicLevel, args...)
+	builtinLogger.Panicln(args...)
 }
 
 func Fatalln(args ...interface{}) {
-	builtinLogger.Logln(FatalLevel, args...)
+	builtinLogger.Fatalln(args...)
 }
 
 func Errorln(args ...interface{}) {
-	builtinLogger.Logln(ErrorLevel, args...)
+	builtinLogger.Errorln(args...)
 }
 
 func Warnln(args ...interface{}) {
-	builtinLogger.Logln(WarnLevel, args...)
+	builtinLogger.Warnln(args...)
 }
 
 func Infoln(args ...interface{}) {
-	builtinLogger.Logln(InfoLevel, args...)
+	builtinLogger.Infoln(args...)
 }
 
 func Debugln(args ...interface{}) {
-	builtinLogger.Logln(DebugLevel, args...)
+	builtinLogger.Debugln(args...)
+}
+
+func Println(args ...interface{}) {
+	builtinLogger.Println(args...)
 }
