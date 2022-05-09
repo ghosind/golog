@@ -43,11 +43,11 @@ func (entry *Entry) Log(level Level, message string) {
 	}
 }
 
-func (entry *Entry) Logf(level Level, message string, args ...interface{}) {
+func (entry *Entry) Logf(level Level, message string, args ...any) {
 	entry.Log(level, fmt.Sprintf(message, args...))
 }
 
-func (entry *Entry) Logln(level Level, args ...interface{}) {
+func (entry *Entry) Logln(level Level, args ...any) {
 	msg := fmt.Sprintln(args...)
 	entry.Log(level, msg[:len(msg)-1])
 }
@@ -80,58 +80,58 @@ func (entry *Entry) Print(message string) {
 	entry.Log(InfoLevel, message)
 }
 
-func (entry *Entry) Panicf(message string, args ...interface{}) {
+func (entry *Entry) Panicf(message string, args ...any) {
 	entry.Logf(PanicLevel, message, args...)
 }
 
-func (entry *Entry) Fatalf(message string, args ...interface{}) {
+func (entry *Entry) Fatalf(message string, args ...any) {
 	entry.Logf(FatalLevel, message, args...)
 }
 
-func (entry *Entry) Errorf(message string, args ...interface{}) {
+func (entry *Entry) Errorf(message string, args ...any) {
 	entry.Logf(ErrorLevel, message, args...)
 }
 
-func (entry *Entry) Warnf(message string, args ...interface{}) {
+func (entry *Entry) Warnf(message string, args ...any) {
 	entry.Logf(WarnLevel, message, args...)
 }
 
-func (entry *Entry) Infof(message string, args ...interface{}) {
+func (entry *Entry) Infof(message string, args ...any) {
 	entry.Logf(InfoLevel, message, args...)
 }
 
-func (entry *Entry) Debugf(message string, args ...interface{}) {
+func (entry *Entry) Debugf(message string, args ...any) {
 	entry.Logf(DebugLevel, message, args...)
 }
 
-func (entry *Entry) Printf(message string, args ...interface{}) {
+func (entry *Entry) Printf(message string, args ...any) {
 	entry.Logf(InfoLevel, message, args...)
 }
 
-func (entry *Entry) Panicln(args ...interface{}) {
+func (entry *Entry) Panicln(args ...any) {
 	entry.Logln(PanicLevel, args...)
 }
 
-func (entry *Entry) Fatalln(args ...interface{}) {
+func (entry *Entry) Fatalln(args ...any) {
 	entry.Logln(FatalLevel, args...)
 }
 
-func (entry *Entry) Errorln(args ...interface{}) {
+func (entry *Entry) Errorln(args ...any) {
 	entry.Logln(ErrorLevel, args...)
 }
 
-func (entry *Entry) Warnln(args ...interface{}) {
+func (entry *Entry) Warnln(args ...any) {
 	entry.Logln(WarnLevel, args...)
 }
 
-func (entry *Entry) Infoln(args ...interface{}) {
+func (entry *Entry) Infoln(args ...any) {
 	entry.Logln(InfoLevel, args...)
 }
 
-func (entry *Entry) Debugln(args ...interface{}) {
+func (entry *Entry) Debugln(args ...any) {
 	entry.Logln(DebugLevel, args...)
 }
 
-func (entry *Entry) Println(args ...interface{}) {
+func (entry *Entry) Println(args ...any) {
 	entry.Logln(InfoLevel, args...)
 }

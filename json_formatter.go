@@ -12,7 +12,7 @@ type JSONFormatter struct {
 }
 
 func (formatter JSONFormatter) Format(entry *Entry) ([]byte, error) {
-	data := make(map[string]interface{})
+	data := make(map[string]any)
 
 	timestampFormat := formatter.TimestampFormat
 	if timestampFormat == "" {

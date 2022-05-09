@@ -30,58 +30,58 @@ func Print(message string) {
 	builtinLogger.Print(message)
 }
 
-func Panicf(message string, args ...interface{}) {
+func Panicf(message string, args ...any) {
 	builtinLogger.Panicf(message, args...)
 }
 
-func Fatalf(message string, args ...interface{}) {
+func Fatalf(message string, args ...any) {
 	builtinLogger.Fatalf(message, args...)
 }
 
-func Errorf(message string, args ...interface{}) {
+func Errorf(message string, args ...any) {
 	builtinLogger.Errorf(message, args...)
 }
 
-func Warnf(message string, args ...interface{}) {
+func Warnf(message string, args ...any) {
 	builtinLogger.Warnf(message, args...)
 }
 
-func Infof(message string, args ...interface{}) {
+func Infof(message string, args ...any) {
 	builtinLogger.Infof(message, args...)
 }
 
-func Debugf(message string, args ...interface{}) {
+func Debugf(message string, args ...any) {
 	builtinLogger.Debugf(message, args...)
 }
 
-func Printf(message string, args ...interface{}) {
+func Printf(message string, args ...any) {
 	builtinLogger.Printf(message, args...)
 }
 
-func Panicln(args ...interface{}) {
+func Panicln(args ...any) {
 	builtinLogger.Panicln(args...)
 }
 
-func Fatalln(args ...interface{}) {
+func Fatalln(args ...any) {
 	builtinLogger.Fatalln(args...)
 }
 
-func Errorln(args ...interface{}) {
+func Errorln(args ...any) {
 	builtinLogger.Errorln(args...)
 }
 
-func Warnln(args ...interface{}) {
+func Warnln(args ...any) {
 	builtinLogger.Warnln(args...)
 }
 
-func Infoln(args ...interface{}) {
+func Infoln(args ...any) {
 	builtinLogger.Infoln(args...)
 }
 
-func Debugln(args ...interface{}) {
+func Debugln(args ...any) {
 	builtinLogger.Debugln(args...)
 }
 
-func Println(args ...interface{}) {
+func Println(args ...any) {
 	builtinLogger.Println(args...)
 }

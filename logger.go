@@ -18,7 +18,7 @@ func New() *Logger {
 		Level:     InfoLevel,
 		Appenders: make([]Appender, 0),
 		entries: &sync.Pool{
-			New: func() interface{} {
+			New: func() any {
 				return newEntry()
 			},
 		},
@@ -101,7 +101,7 @@ func (logger *Logger) Print(message string) {
 	logger.Log(InfoLevel, message)
 }
 
-func (logger *Logger) Logf(level Level, message string, args ...interface{}) {
+func (logger *Logger) Logf(level Level, message string, args ...any) {
 	if logger.isLevelEnabled(level) {
 		entry := logger.newEntry()
 		entry.Logf(level, message, args...)
@@ -109,35 +109,35 @@ func (logger *Logger) Logf(level Level, message string, args ...interface{}) {
 	}
 }
 
-func (logger *Logger) Panicf(message string, args ...interface{}) {
+func (logger *Logger) Panicf(message string, args ...any) {
 	logger.Logf(PanicLevel, message, args...)
 }
 
-func (logger *Logger) Fatalf(message string, args ...interface{}) {
+func (logger *Logger) Fatalf(message string, args ...any) {
 	logger.Logf(FatalLevel, message, args...)
 }
 
-func (logger *Logger) Errorf(message string, args ...interface{}) {
+func (logger *Logger) Errorf(message string, args ...any) {
 	logger.Logf(ErrorLevel, message, args...)
 }
 
-func (logger *Logger) Warnf(message string, args ...interface{}) {
+func (logger *Logger) Warnf(message string, args ...any) {
 	logger.Logf(WarnLevel, message, args...)
 }
 
-func (logger *Logger) Infof(message string, args ...interface{}) {
+func (logger *Logger) Infof(message string, args ...any) {
 	logger.Logf(InfoLevel, message, args...)
 }
 
-func (logger *Logger) Debugf(message string, args ...interface{}) {
+func (logger *Logger) Debugf(message string, args ...any) {
 	logger.Logf(DebugLevel, message, args...)
 }
 
-func (logger *Logger) Printf(message string, args ...interface{}) {
+func (logger *Logger) Printf(message string, args ...any) {
 	logger.Logf(InfoLevel, message, args...)
 }
 
-func (logger *Logger) Logln(level Level, args ...interface{}) {
+func (logger *Logger) Logln(level Level, args ...any) {
 	if logger.isLevelEnabled(level) {
 		entry := logger.newEntry()
 		entry.Logln(level, args...)
@@ -145,31 +145,31 @@ func (logger *Logger) Logln(level Level, args ...interface{}) {
 	}
 }
 
-func (logger *Logger) Panicln(args ...interface{}) {
+func (logger *Logger) Panicln(args ...any) {
 	logger.Logln(PanicLevel, args...)
 }
 
-func (logger *Logger) Fatalln(args ...interface{}) {
+func (logger *Logger) Fatalln(args ...any) {
 	logger.Logln(FatalLevel, args...)
 }
 
-func (logger *Logger) Errorln(args ...interface{}) {
+func (logger *Logger) Errorln(args ...any) {
 	logger.Logln(ErrorLevel, args...)
 }
 
-func (logger *Logger) Warnln(args ...interface{}) {
+func (logger *Logger) Warnln(args ...any) {
 	logger.Logln(WarnLevel, args...)
 }
 
-func (logger *Logger) Infoln(args ...interface{}) {
+func (logger *Logger) Infoln(args ...any) {
 	logger.Logln(InfoLevel, args...)
 }
 
-func (logger *Logger) Debugln(args ...interface{}) {
+func (logger *Logger) Debugln(args ...any) {
 	logger.Logln(DebugLevel, args...)
 }
 
-func (logger *Logger) Println(args ...interface{}) {
+func (logger *Logger) Println(args ...any) {
 	logger.Logln(InfoLevel, args...)
 }
 
