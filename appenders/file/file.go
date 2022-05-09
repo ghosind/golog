@@ -33,6 +33,13 @@ type FileAppender struct {
 	path      string
 }
 
+const (
+	// defaultLogFileMode is the default open file mode for log files.
+	defaultLogFileMode fs.FileMode = 0644
+	// defaultLogDirMode is the default open file mode for logs directory.
+	defaultLogDirMode fs.FileMode = 0775
+)
+
 // New creates a new FileAppender.
 func New(config ...Config) *FileAppender {
 	cfg := Config{}
@@ -55,7 +62,7 @@ func New(config ...Config) *FileAppender {
 	appender.filename = appender.path + "/" + appender.filename
 
 	if cfg.Mode == 0 {
-		appender.mode = 0644
+		appender.mode = defaultLogFileMode
 	} else {
 		appender.mode = cfg.Mode
 	}
@@ -89,11 +96,12 @@ func (appender *FileAppender) Write(entry *golog.Entry) error {
 	return nil
 }
 
-// checkDir checks the directory path exists or not, if not exists, it will create the directory.
+// checkDir checks the directory path exists or not, if not exists, it will create the directory and set the open file
+// mode to 0775.
 func (appender *FileAppender) checkDir() error {
 	_, err := os.Stat(appender.path)
 	if os.IsNotExist(err) {
-		return os.Mkdir(appender.path, 0775)
+		return os.Mkdir(appender.path, defaultLogDirMode)
 	}
 
 	return err
